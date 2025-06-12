@@ -8,7 +8,7 @@
     using Model;
 
     [Route("api/[controller]")]
-    public class DespatchDateController : Controller
+    public class DespatchDateController(IDbContext dbContext) : Controller
     {
         public DateTime _mlt;
 
@@ -18,7 +18,6 @@
             _mlt = orderDate; // max lead time
             foreach (var ID in productIds)
             {
-                DbContext dbContext = new DbContext();
                 var s = dbContext.Products.Single(x => x.ProductId == ID).SupplierId;
                 var lt = dbContext.Suppliers.Single(x => x.SupplierId == s).LeadTime;
                 if (orderDate.AddDays(lt) > _mlt)
