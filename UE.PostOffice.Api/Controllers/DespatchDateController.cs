@@ -10,7 +10,7 @@ namespace UE.PostOffice.Api.Controllers
     public class DespatchDateController(IDespatchDateService despatchDateService) : Controller
     {
         [HttpGet]
-        public ActionResult<DespatchDate> Get(List<int> productIds, DateTime orderDate)
+        public ActionResult<DespatchDate> Get([FromQuery] List<int> productIds, DateTime orderDate)
         {
             try
             {

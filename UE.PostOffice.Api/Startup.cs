@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using UE.PostOffice.Api.Validators;
 using UE.PostOffice.Core.Configuration;
 
 namespace UE.PostOffice.Api
@@ -20,6 +22,7 @@ namespace UE.PostOffice.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddValidatorsFromAssemblyContaining<DespatchDateRequestValidator>();
             
             services.Configure<DespatchSettings>(Configuration.GetSection("DespatchSettings"));
         }
