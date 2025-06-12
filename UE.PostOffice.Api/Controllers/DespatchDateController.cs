@@ -13,18 +13,25 @@ namespace UE.PostOffice.Api.Controllers
     public class DespatchDateController(IDbContext dbContext, IOptions<DespatchSettings> settings) : Controller
     {
         [HttpGet]
-        public DespatchDate Get(List<int> productIds, DateTime orderDate)
+        public ActionResult<DespatchDate> Get(List<int> productIds, DateTime orderDate)
         {
-            DateTime maxLeadTime = orderDate;
-            foreach (var productId in productIds)
+            try
             {
-                var productSupplierId = dbContext.Products.Single(x => x.ProductId == productId).SupplierId;
-                var supplierLeadTime = dbContext.Suppliers.Single(x => x.SupplierId == productSupplierId).LeadTime;
-                if (orderDate.AddDays(supplierLeadTime) > maxLeadTime)
-                    maxLeadTime = orderDate.AddDays(supplierLeadTime);
-            }
+                DateTime maxLeadTime = orderDate;
+                foreach (var productId in productIds)
+                {
+                    var productSupplierId = dbContext.Products.Single(x => x.ProductId == productId).SupplierId;
+                    var supplierLeadTime = dbContext.Suppliers.Single(x => x.SupplierId == productSupplierId).LeadTime;
+                    if (orderDate.AddDays(supplierLeadTime) > maxLeadTime)
+                        maxLeadTime = orderDate.AddDays(supplierLeadTime);
+                }
 
-            return new DespatchDate { Date = AdjustDateForWeekend(maxLeadTime) };
+                return Ok(new DespatchDate { Date = AdjustDateForWeekend(maxLeadTime) });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Something went wrong trying to get the despatch date");
+            }
         }
         
         //To be relocated later
