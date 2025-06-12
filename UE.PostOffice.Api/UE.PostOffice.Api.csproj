@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\UE.PostOffice.Core\UE.PostOffice.Core.csproj" />
     <ProjectReference Include="..\UE.PostOffice.Data\UE.PostOffice.Data.csproj" />
   </ItemGroup>
 
