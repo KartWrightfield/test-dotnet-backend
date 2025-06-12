@@ -10,25 +10,23 @@
     [Route("api/[controller]")]
     public class DespatchDateController(IDbContext dbContext) : Controller
     {
-        public DateTime _mlt;
-
         [HttpGet]
         public DespatchDate Get(List<int> productIds, DateTime orderDate)
         {
-            _mlt = orderDate; // max lead time
+            DateTime maxLeadTime = orderDate;
             foreach (var ID in productIds)
             {
                 var s = dbContext.Products.Single(x => x.ProductId == ID).SupplierId;
                 var lt = dbContext.Suppliers.Single(x => x.SupplierId == s).LeadTime;
-                if (orderDate.AddDays(lt) > _mlt)
-                    _mlt = orderDate.AddDays(lt);
+                if (orderDate.AddDays(lt) > maxLeadTime)
+                    maxLeadTime = orderDate.AddDays(lt);
             }
-            if (_mlt.DayOfWeek == DayOfWeek.Saturday)
+            if (maxLeadTime.DayOfWeek == DayOfWeek.Saturday)
             {
-                return new DespatchDate { Date = _mlt.AddDays(2) };
+                return new DespatchDate { Date = maxLeadTime.AddDays(2) };
             }
-            else if (_mlt.DayOfWeek == DayOfWeek.Sunday) return new DespatchDate { Date = _mlt.AddDays(1) };
-            else return new DespatchDate { Date = _mlt };
+            else if (maxLeadTime.DayOfWeek == DayOfWeek.Sunday) return new DespatchDate { Date = maxLeadTime.AddDays(1) };
+            else return new DespatchDate { Date = maxLeadTime };
         }
     }
 }
