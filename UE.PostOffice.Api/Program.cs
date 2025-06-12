@@ -1,8 +1,8 @@
-﻿namespace UE.PostOffice.Api
-{
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
+namespace UE.PostOffice.Api
+{
     public class Program
     {
         public static void Main(string[] args)

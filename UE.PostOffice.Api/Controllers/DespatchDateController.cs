@@ -1,12 +1,12 @@
-﻿namespace UE.PostOffice.Api.Controllers
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using Data;
-    using Microsoft.AspNetCore.Mvc;
-    using Model;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using UE.PostOffice.Api.Model;
+using UE.PostOffice.Data;
 
+namespace UE.PostOffice.Api.Controllers
+{
     [Route("api/[controller]")]
     public class DespatchDateController(IDbContext dbContext) : Controller
     {

@@ -1,13 +1,12 @@
-﻿using UE.PostOffice.Data;
+﻿using System;
+using System.Collections.Generic;
+using Shouldly;
+using UE.PostOffice.Api.Controllers;
+using UE.PostOffice.Data;
+using Xunit;
 
 namespace UE.PostOffice.Tests
 {
-    using System;
-    using System.Collections.Generic;
-    using Api.Controllers;
-    using Shouldly;
-    using Xunit;
-
     public class PostOfficeTests
     {
         private readonly DespatchDateController _controllerUnderTest;

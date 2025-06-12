@@ -1,7 +1,7 @@
-﻿namespace UE.PostOffice.Data
-{
-    using System.Linq;
+﻿using System.Linq;
 
+namespace UE.PostOffice.Data
+{
     public interface IDbContext
     {
         IQueryable<Supplier> Suppliers { get; }

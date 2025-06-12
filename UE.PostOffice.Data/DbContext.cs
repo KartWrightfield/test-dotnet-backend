@@ -1,8 +1,8 @@
-﻿namespace UE.PostOffice.Data
-{
-    using System.Linq;
-    using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 
+namespace UE.PostOffice.Data
+{
     public class DbContext : IDbContext
     {
         public IQueryable<Supplier> Suppliers
