@@ -16,12 +16,12 @@ namespace UE.PostOffice.Api.Controllers
         public DespatchDate Get(List<int> productIds, DateTime orderDate)
         {
             DateTime maxLeadTime = orderDate;
-            foreach (var ID in productIds)
+            foreach (var productId in productIds)
             {
-                var s = dbContext.Products.Single(x => x.ProductId == ID).SupplierId;
-                var lt = dbContext.Suppliers.Single(x => x.SupplierId == s).LeadTime;
-                if (orderDate.AddDays(lt) > maxLeadTime)
-                    maxLeadTime = orderDate.AddDays(lt);
+                var productSupplierId = dbContext.Products.Single(x => x.ProductId == productId).SupplierId;
+                var supplierLeadTime = dbContext.Suppliers.Single(x => x.SupplierId == productSupplierId).LeadTime;
+                if (orderDate.AddDays(supplierLeadTime) > maxLeadTime)
+                    maxLeadTime = orderDate.AddDays(supplierLeadTime);
             }
 
             return new DespatchDate { Date = AdjustDateForWeekend(maxLeadTime) };
