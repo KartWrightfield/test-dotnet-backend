@@ -1,4 +1,4 @@
-﻿namespace UE.PostOffice.Api.Configuration;
+﻿namespace UE.PostOffice.Core.Configuration;
 
 public class DespatchSettings
 {

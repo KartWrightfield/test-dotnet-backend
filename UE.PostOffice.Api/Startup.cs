@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using UE.PostOffice.Api.Configuration;
+using UE.PostOffice.Core.Configuration;
 
 namespace UE.PostOffice.Api
 {
