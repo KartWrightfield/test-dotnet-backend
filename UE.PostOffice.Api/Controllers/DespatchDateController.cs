@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using UE.PostOffice.Api.Configuration;
 using UE.PostOffice.Api.Model;
 using UE.PostOffice.Data;
 
 namespace UE.PostOffice.Api.Controllers
 {
     [Route("api/[controller]")]
-    public class DespatchDateController(IDbContext dbContext) : Controller
+    public class DespatchDateController(IDbContext dbContext, IOptions<DespatchSettings> settings) : Controller
     {
         [HttpGet]
         public DespatchDate Get(List<int> productIds, DateTime orderDate)
@@ -21,12 +23,19 @@ namespace UE.PostOffice.Api.Controllers
                 if (orderDate.AddDays(lt) > maxLeadTime)
                     maxLeadTime = orderDate.AddDays(lt);
             }
-            if (maxLeadTime.DayOfWeek == DayOfWeek.Saturday)
-            {
-                return new DespatchDate { Date = maxLeadTime.AddDays(2) };
-            }
-            else if (maxLeadTime.DayOfWeek == DayOfWeek.Sunday) return new DespatchDate { Date = maxLeadTime.AddDays(1) };
-            else return new DespatchDate { Date = maxLeadTime };
+
+            return new DespatchDate { Date = AdjustDateForWeekend(maxLeadTime) };
         }
+        
+        //To be relocated later
+        private DateTime AdjustDateForWeekend(DateTime date)
+        {
+            return date.DayOfWeek switch
+            {
+                DayOfWeek.Saturday => date.AddDays(settings.Value.WeekendsSaturdayDelay),
+                DayOfWeek.Sunday => date.AddDays(settings.Value.WeekendsSundayDelay),
+                _ => date
+            };
+        } 
     }
 }

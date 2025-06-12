@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using UE.PostOffice.Api.Configuration;
 
 namespace UE.PostOffice.Api
 {
@@ -19,6 +20,8 @@ namespace UE.PostOffice.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            
+            services.Configure<DespatchSettings>(Configuration.GetSection("DespatchSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

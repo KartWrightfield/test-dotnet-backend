@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Options;
 using Shouldly;
+using UE.PostOffice.Api.Configuration;
 using UE.PostOffice.Api.Controllers;
 using UE.PostOffice.Data;
 using Xunit;
@@ -14,7 +16,14 @@ namespace UE.PostOffice.Tests
         public PostOfficeTests()
         {
             IDbContext dbContext = new DbContext();
-            _controllerUnderTest = new DespatchDateController(dbContext);
+            var despatchSettings = new DespatchSettings
+            {
+                WeekendsSaturdayDelay = 2,
+                WeekendsSundayDelay = 1
+            };
+            var options = Options.Create(despatchSettings);
+            
+            _controllerUnderTest = new DespatchDateController(dbContext, options);
         }
         
         [Fact]

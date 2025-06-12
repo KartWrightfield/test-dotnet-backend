@@ -4,6 +4,6 @@
 
     public class DespatchDate
     {
-        public DateTime Date { get; set; }
+        public DateTime Date { get; init; }
     }
 }
