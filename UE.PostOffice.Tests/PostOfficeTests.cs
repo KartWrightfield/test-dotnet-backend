@@ -37,7 +37,9 @@ namespace UE.PostOffice.Tests
         [Fact]
         public void OneProductWithLeadTimeOfOneDay()
         {
-            var response = _controllerUnderTest.Get([1], DateTime.Now);
+            var request = new DespatchDateRequest { ProductIds = [1], OrderDate = DateTime.Now };
+            
+            var response = _controllerUnderTest.Get(request);
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(1));
@@ -46,7 +48,9 @@ namespace UE.PostOffice.Tests
         [Fact]
         public void OneProductWithLeadTimeOfTwoDay()
         {
-            var response = _controllerUnderTest.Get([2], DateTime.Now);
+            var request = new DespatchDateRequest { ProductIds = [2], OrderDate = DateTime.Now };
+            
+            var response = _controllerUnderTest.Get(request);
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(2));
@@ -55,16 +59,20 @@ namespace UE.PostOffice.Tests
         [Fact]
         public void OneProductWithLeadTimeOfThreeDay()
         {
-            var response = _controllerUnderTest.Get([3], DateTime.Now);
+            var request = new DespatchDateRequest { ProductIds = [3], OrderDate = DateTime.Now };
+            
+            var response = _controllerUnderTest.Get(request);
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(3));
         }
 
         [Fact]
-        public void SaturdayHasExtraTwoDays() {
+        public void SaturdayHasExtraTwoDays() 
+        {
+            var request = new DespatchDateRequest { ProductIds = [1], OrderDate = new DateTime(2018,1,26) };
 
-            var response = _controllerUnderTest.Get([1], new DateTime(2018,1,26));
+            var response = _controllerUnderTest.Get(request);
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.ShouldBe(new DateTime(2018, 1, 26).Date.AddDays(3));
@@ -73,7 +81,9 @@ namespace UE.PostOffice.Tests
         [Fact]
         public void SundayHasExtraDay()
         {
-            var response = _controllerUnderTest.Get([3], new DateTime(2018, 1, 25));
+            var request = new DespatchDateRequest { ProductIds = [3], OrderDate = new DateTime(2018, 1, 25) };
+            
+            var response = _controllerUnderTest.Get(request);
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.ShouldBe(new DateTime(2018, 1, 25).Date.AddDays(4));

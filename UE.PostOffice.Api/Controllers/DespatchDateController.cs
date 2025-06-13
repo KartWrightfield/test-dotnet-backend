@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using UE.PostOffice.Api.Model;
 using UE.PostOffice.Core.Interfaces.Services;
@@ -10,11 +9,11 @@ namespace UE.PostOffice.Api.Controllers
     public class DespatchDateController(IDespatchDateService despatchDateService) : Controller
     {
         [HttpGet]
-        public ActionResult<DespatchDate> Get([FromQuery] List<int> productIds, DateTime orderDate)
+        public ActionResult<DespatchDate> Get([FromQuery] DespatchDateRequest request)
         {
             try
             {
-                var despatchDate = despatchDateService.CalculateDespatchDate(productIds, orderDate);
+                var despatchDate = despatchDateService.CalculateDespatchDate(request.ProductIds, request.OrderDate);
                 
                 return Ok(new DespatchDate { Date = despatchDate });
             }
