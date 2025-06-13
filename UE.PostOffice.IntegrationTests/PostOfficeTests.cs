@@ -12,7 +12,7 @@ using UE.PostOffice.Data;
 using UE.PostOffice.Data.Repositories;
 using Xunit;
 
-namespace UE.PostOffice.Tests
+namespace UE.PostOffice.IntegrationTests
 {
     public class PostOfficeTests
     {
