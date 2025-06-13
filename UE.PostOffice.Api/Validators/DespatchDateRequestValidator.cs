@@ -18,7 +18,7 @@ public class DespatchDateRequestValidator : AbstractValidator<DespatchDateReques
         
         RuleFor(x => x.OrderDate)
             .NotEmpty()
-            .Must(date => date.Date <= DateTime.UtcNow.Date)
+            .Must(date => date <= DateTime.UtcNow)
             .WithMessage("Order date cannot be in the future");
     }
 }
