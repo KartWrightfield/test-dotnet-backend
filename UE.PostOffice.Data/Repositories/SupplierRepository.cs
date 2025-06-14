@@ -10,10 +10,13 @@ public class SupplierRepository(IDbContext dbContext) : ISupplierRepository
     {
         return dbContext.Products
             .Where(p => productIds.Contains(p.ProductId))
+            .Select(p => p.SupplierId)
+            .Distinct()
             .Join(dbContext.Suppliers,
-                product => product.SupplierId,
+                supplierId => supplierId,
                 supplier => supplier.SupplierId,
-                (product, supplier) => supplier.LeadTime)
+                (_, supplier) => supplier.LeadTime)
+            .DefaultIfEmpty(0)
             .Max();
     }
 }
