@@ -33,7 +33,7 @@ namespace UE.PostOffice.Api.Controllers
                 
                 return Ok(new DespatchDate { Date = despatchDate });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return StatusCode(500, "Something went wrong trying to get the despatch date");
             }
