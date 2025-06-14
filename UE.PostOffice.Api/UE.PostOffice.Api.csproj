@@ -4,6 +4,11 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\UE.PostOffice.Core\UE.PostOffice.Core.csproj" />
     <ProjectReference Include="..\UE.PostOffice.Data\UE.PostOffice.Data.csproj" />

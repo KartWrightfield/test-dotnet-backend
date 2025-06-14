@@ -1,4 +1,7 @@
-﻿using FluentValidation;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +10,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using UE.PostOffice.Api.Validators;
 using UE.PostOffice.Core.Configuration;
+using UE.PostOffice.Core.Interfaces.Repositories;
+using UE.PostOffice.Core.Interfaces.Services;
+using UE.PostOffice.Core.Services;
+using UE.PostOffice.Data;
+using UE.PostOffice.Data.Repositories;
 
 namespace UE.PostOffice.Api
 {
@@ -27,10 +35,21 @@ namespace UE.PostOffice.Api
             
             services.Configure<DespatchSettings>(Configuration.GetSection("DespatchSettings"));
             
+            services.AddScoped<IDespatchDateService, DespatchDateService>();
+            
+            services.AddScoped<ISupplierRepository,  SupplierRepository>();
+            
+            services.AddScoped<IDbContext, DbContext>();
+            
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo()
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                
+                options.IncludeXmlComments(xmlPath);
+                
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "PostOffice API",
                     Version = "v1"
@@ -51,8 +70,11 @@ namespace UE.PostOffice.Api
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "PostOffice API v1");
                 });
             }
-
-            app.UseHttpsRedirection();
+            else
+            {
+                app.UseHsts();
+                app.UseHttpsRedirection();
+            }
 
             app.UseRouting();
 
