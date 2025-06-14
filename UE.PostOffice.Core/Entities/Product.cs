@@ -1,4 +1,4 @@
-﻿namespace UE.PostOffice.Data
+﻿namespace UE.PostOffice.Core.Entities
 {
     public class Product
     {

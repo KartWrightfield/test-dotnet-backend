@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using UE.PostOffice.Core.Entities;
 
-namespace UE.PostOffice.Data
+namespace UE.PostOffice.Core.Interfaces.Data
 {
     public interface IDbContext
     {

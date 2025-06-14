@@ -1,7 +1,9 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UE.PostOffice.Core.Entities;
+using UE.PostOffice.Core.Interfaces.Data;
 
-namespace UE.PostOffice.Data
+namespace UE.PostOffice.Data.Context
 {
     public class DbContext : IDbContext
     {

@@ -10,10 +10,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using UE.PostOffice.Api.Validators;
 using UE.PostOffice.Core.Configuration;
+using UE.PostOffice.Core.Interfaces.Data;
 using UE.PostOffice.Core.Interfaces.Repositories;
 using UE.PostOffice.Core.Interfaces.Services;
 using UE.PostOffice.Core.Services;
-using UE.PostOffice.Data;
+using UE.PostOffice.Data.Context;
 using UE.PostOffice.Data.Repositories;
 
 namespace UE.PostOffice.Api

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UE.PostOffice.Core.Interfaces.Data;
 using UE.PostOffice.Core.Interfaces.Repositories;
 
 namespace UE.PostOffice.Data.Repositories;

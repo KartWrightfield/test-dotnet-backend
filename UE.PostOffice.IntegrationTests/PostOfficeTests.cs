@@ -5,10 +5,11 @@ using Shouldly;
 using UE.PostOffice.Api.Controllers;
 using UE.PostOffice.Api.Model;
 using UE.PostOffice.Core.Configuration;
+using UE.PostOffice.Core.Interfaces.Data;
 using UE.PostOffice.Core.Interfaces.Repositories;
 using UE.PostOffice.Core.Interfaces.Services;
 using UE.PostOffice.Core.Services;
-using UE.PostOffice.Data;
+using UE.PostOffice.Data.Context;
 using UE.PostOffice.Data.Repositories;
 using Xunit;
 
