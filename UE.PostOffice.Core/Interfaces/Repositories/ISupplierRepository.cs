@@ -2,5 +2,5 @@
 
 public interface ISupplierRepository
 {
-    int GetMaxLeadTimeForProducts(List<int> productIds);
+    Task<int> GetMaxLeadTimeForProducts(List<int> productIds);
 }

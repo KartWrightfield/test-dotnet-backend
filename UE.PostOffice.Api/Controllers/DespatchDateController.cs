@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,11 +25,11 @@ namespace UE.PostOffice.Api.Controllers
         [ProducesResponseType(typeof(DespatchDate), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<DespatchDate> Get([FromQuery] DespatchDateRequest request)
+        public async Task<ActionResult<DespatchDate>> Get([FromQuery] DespatchDateRequest request)
         {
             try
             {
-                var despatchDate = despatchDateService.CalculateDespatchDate(request.ProductIds, request.OrderDate);
+                var despatchDate = await despatchDateService.CalculateDespatchDate(request.ProductIds, request.OrderDate);
                 
                 return Ok(new DespatchDate { Date = despatchDate });
             }

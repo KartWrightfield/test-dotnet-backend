@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Shouldly;
@@ -36,55 +37,55 @@ namespace UE.PostOffice.IntegrationTests
         }
         
         [Fact]
-        public void OneProductWithLeadTimeOfOneDay()
+        public async Task OneProductWithLeadTimeOfOneDay()
         {
             var request = new DespatchDateRequest { ProductIds = [1], OrderDate = DateTime.Now };
             
-            var response = _controllerUnderTest.Get(request);
+            var response = await _controllerUnderTest.Get(request);
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(1));
         }
 
         [Fact]
-        public void OneProductWithLeadTimeOfTwoDay()
+        public async Task OneProductWithLeadTimeOfTwoDay()
         {
             var request = new DespatchDateRequest { ProductIds = [2], OrderDate = DateTime.Now };
             
-            var response = _controllerUnderTest.Get(request);
+            var response = await _controllerUnderTest.Get(request);
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(2));
         }
 
         [Fact]
-        public void OneProductWithLeadTimeOfThreeDay()
+        public async Task OneProductWithLeadTimeOfThreeDay()
         {
             var request = new DespatchDateRequest { ProductIds = [3], OrderDate = DateTime.Now };
             
-            var response = _controllerUnderTest.Get(request);
+            var response = await _controllerUnderTest.Get(request);
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(3));
         }
 
         [Fact]
-        public void SaturdayHasExtraTwoDays() 
+        public async Task SaturdayHasExtraTwoDays() 
         {
             var request = new DespatchDateRequest { ProductIds = [1], OrderDate = new DateTime(2018,1,26) };
 
-            var response = _controllerUnderTest.Get(request);
+            var response = await _controllerUnderTest.Get(request);
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.ShouldBe(new DateTime(2018, 1, 26).Date.AddDays(3));
         }
 
         [Fact]
-        public void SundayHasExtraDay()
+        public async Task SundayHasExtraDay()
         {
             var request = new DespatchDateRequest { ProductIds = [3], OrderDate = new DateTime(2018, 1, 25) };
             
-            var response = _controllerUnderTest.Get(request);
+            var response = await _controllerUnderTest.Get(request);
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.ShouldBe(new DateTime(2018, 1, 25).Date.AddDays(4));

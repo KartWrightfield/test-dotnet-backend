@@ -7,9 +7,9 @@ namespace UE.PostOffice.Core.Services;
 
 public class DespatchDateService(ISupplierRepository supplierRepository, IOptions<DespatchSettings> settings) : IDespatchDateService
 {
-    public DateTime CalculateDespatchDate(List<int> productIds, DateTime orderDate)
+    public async Task<DateTime> CalculateDespatchDate(List<int> productIds, DateTime orderDate)
     {
-        var maxLeadTime = supplierRepository.GetMaxLeadTimeForProducts(productIds);
+        var maxLeadTime = await supplierRepository.GetMaxLeadTimeForProducts(productIds);
         var rawDespatchDate = orderDate.AddDays(maxLeadTime);
         
         return AdjustDateForWeekend(rawDespatchDate);

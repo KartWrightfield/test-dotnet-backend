@@ -2,5 +2,5 @@
 
 public interface IDespatchDateService
 {
-    DateTime CalculateDespatchDate(List<int> productIds, DateTime orderDate);
+    Task<DateTime> CalculateDespatchDate(List<int> productIds, DateTime orderDate);
 }
