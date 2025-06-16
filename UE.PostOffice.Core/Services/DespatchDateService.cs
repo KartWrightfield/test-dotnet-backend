@@ -9,19 +9,38 @@ public class DespatchDateService(ISupplierRepository supplierRepository, IOption
 {
     public async Task<DateTime> CalculateDespatchDate(List<int> productIds, DateTime orderDate)
     {
+        var adjustedOrderDate = AdjustOrderDateForWeekend(orderDate);
         var maxLeadTime = await supplierRepository.GetMaxLeadTimeForProducts(productIds);
-        var rawDespatchDate = orderDate.AddDays(maxLeadTime);
         
-        return AdjustDateForWeekend(rawDespatchDate);
+        return AddBusinessDays(adjustedOrderDate, maxLeadTime);
+    }
+
+    private DateTime AddBusinessDays(DateTime orderDate, int daysRequiredToFulfil)
+    {
+        var despatchDate = orderDate;
+        var remainingFulfilmentDaysRequired = daysRequiredToFulfil;
+
+        while (remainingFulfilmentDaysRequired > 0)
+        {
+            despatchDate = despatchDate.AddDays(1);
+
+            if (despatchDate.DayOfWeek != DayOfWeek.Saturday &&
+                despatchDate.DayOfWeek != DayOfWeek.Sunday)
+            {
+                remainingFulfilmentDaysRequired--;
+            }
+        }
+
+        return despatchDate;
     }
     
-    private DateTime AdjustDateForWeekend(DateTime date)
+    private DateTime AdjustOrderDateForWeekend(DateTime orderDate)
     {
-        return date.DayOfWeek switch
+        return orderDate.DayOfWeek switch
         {
-            DayOfWeek.Saturday => date.AddDays(settings.Value.WeekendsSaturdayDelay),
-            DayOfWeek.Sunday => date.AddDays(settings.Value.WeekendsSundayDelay),
-            _ => date
+            DayOfWeek.Saturday => orderDate.AddDays(settings.Value.WeekendsSaturdayDelay),
+            DayOfWeek.Sunday => orderDate.AddDays(settings.Value.WeekendsSundayDelay),
+            _ => orderDate
         };
-    } 
+    }
 }
