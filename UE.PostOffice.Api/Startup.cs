@@ -8,11 +8,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using UE.PostOffice.Api.Filters;
 using UE.PostOffice.Api.Validators;
 using UE.PostOffice.Core.Configuration;
 using UE.PostOffice.Core.Interfaces.Data;
@@ -31,7 +33,11 @@ namespace UE.PostOffice.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add<ValidateModelAttribute>();
+            });
+                
             services.AddValidatorsFromAssemblyContaining<DespatchDateRequestValidator>();
 
             const string key = "super-secret-key-that-should-never-be-committed-to-a-repo";
