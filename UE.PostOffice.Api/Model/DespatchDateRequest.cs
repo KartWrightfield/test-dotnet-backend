@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UE.PostOffice.Api.Model;
 
+/// <summary>
+/// Represents a request to get the calculated despatch date for an order.
+/// </summary>
 public class DespatchDateRequest
 {
     /// <summary>

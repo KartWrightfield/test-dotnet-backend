@@ -9,6 +9,12 @@ using UE.PostOffice.Core.Interfaces.Services;
 
 namespace UE.PostOffice.Api.Controllers
 {
+    /// <summary>
+    /// Controller responsible for handling operations related to despatch dates.
+    /// </summary>
+    /// <remarks>
+    /// Requires authorisation for accessing its endpoints.
+    /// </remarks>
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]

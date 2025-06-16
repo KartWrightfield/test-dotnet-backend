@@ -6,6 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace UE.PostOffice.Api.Controllers;
 
+/// <summary>
+/// Controller responsible for authentication-related operations.
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
@@ -15,6 +18,9 @@ public class AuthController : ControllerBase
     /// </summary>
     /// <returns>A JWT token that can be used to authenticate API requests</returns>
     /// <response code="200">Returns the generated JWT token</response>
+    /// /// <remarks>
+    /// The generated token is valid for 24 hours from the time of creation.
+    /// </remarks>
     [HttpPost("token")]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public IActionResult GetToken()

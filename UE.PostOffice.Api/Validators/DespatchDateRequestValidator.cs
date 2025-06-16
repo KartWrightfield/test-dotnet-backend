@@ -5,6 +5,14 @@ using UE.PostOffice.Api.Model;
 
 namespace UE.PostOffice.Api.Validators;
 
+/// <summary>
+/// Validates the despatch date request to ensure all constraints are met.
+/// </summary>
+/// <remarks>
+/// The validation checks include:
+/// - Ensuring the product IDs are not empty, contain only positive numbers greater than zero, and do not include duplicates.
+/// - Ensuring the order date is provided and is not a future date.
+/// </remarks>
 public class DespatchDateRequestValidator : AbstractValidator<DespatchDateRequest>
 {
     public DespatchDateRequestValidator()
