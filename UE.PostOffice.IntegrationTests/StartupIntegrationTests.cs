@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using UE.PostOffice.Api;
-using UE.PostOffice.Api.Model;
+using UE.PostOffice.Api.Models;
 using UE.PostOffice.Api.Validators;
 using UE.PostOffice.Core.Configuration;
 using UE.PostOffice.Core.Interfaces.Data;

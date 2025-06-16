@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
 using Moq;
 using UE.PostOffice.Api.Filters;
-using UE.PostOffice.Api.Model;
+using UE.PostOffice.Api.Models;
 using Xunit;
 
 namespace UE.PostOffice.UnitTests;

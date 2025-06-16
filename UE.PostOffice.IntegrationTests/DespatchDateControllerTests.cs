@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 using Shouldly;
 using UE.PostOffice.Api;
 using UE.PostOffice.Api.Controllers;
-using UE.PostOffice.Api.Model;
+using UE.PostOffice.Api.Models;
 using UE.PostOffice.Core.Configuration;
 using UE.PostOffice.Core.Interfaces.Data;
 using UE.PostOffice.Core.Interfaces.Repositories;

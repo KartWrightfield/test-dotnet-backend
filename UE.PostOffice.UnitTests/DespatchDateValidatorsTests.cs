@@ -1,5 +1,5 @@
 ﻿using FluentValidation.TestHelper;
-using UE.PostOffice.Api.Model;
+using UE.PostOffice.Api.Models;
 using UE.PostOffice.Api.Validators;
 using Xunit;
 

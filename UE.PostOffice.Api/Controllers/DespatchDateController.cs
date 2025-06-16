@@ -4,7 +4,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using UE.PostOffice.Api.Model;
+using UE.PostOffice.Api.Models;
 using UE.PostOffice.Core.Interfaces.Services;
 
 namespace UE.PostOffice.Api.Controllers

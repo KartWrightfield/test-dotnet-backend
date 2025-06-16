@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace UE.PostOffice.Api.Model;
+namespace UE.PostOffice.Api.Models;
 
 /// <summary>
 /// Represents a request to get the calculated despatch date for an order.

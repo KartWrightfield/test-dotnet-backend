@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using FluentValidation;
-using UE.PostOffice.Api.Model;
+using UE.PostOffice.Api.Models;
 
 namespace UE.PostOffice.Api.Validators;
 

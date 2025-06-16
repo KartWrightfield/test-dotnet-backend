@@ -1,4 +1,4 @@
-﻿namespace UE.PostOffice.Api.Model
+﻿namespace UE.PostOffice.Api.Models
 {
     using System;
 
