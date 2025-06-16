@@ -20,6 +20,17 @@ namespace UE.PostOffice.IntegrationTests
     {
         private readonly DespatchDateController _controllerUnderTest;
 
+        private static class TestDates
+        {
+            public static readonly DateTime Monday = new DateTime(2025, 6, 9);
+            public static readonly DateTime Tuesday = new DateTime(2025, 6, 10);
+            public static readonly DateTime Wednesday = new DateTime(2025, 6, 11);
+            public static readonly DateTime Thursday = new DateTime(2025, 6, 12);
+            public static readonly DateTime Friday = new DateTime(2025, 6, 13);
+            public static readonly DateTime Saturday = new DateTime(2025, 6, 14);
+            public static readonly DateTime Sunday = new DateTime(2025, 6, 15);
+        }
+
         public PostOfficeTests()
         {
             IDbContext dbContext = new DbContext();
@@ -37,58 +48,171 @@ namespace UE.PostOffice.IntegrationTests
         }
         
         [Fact]
-        public async Task OneProductWithLeadTimeOfOneDay()
+        public async Task 
+            Given_OneProductWithLeadTimeOfOneDay_When_OrderDateIsMonday_Then_ResultShouldBeTheDateOfTheFollowingTuesday()
         {
-            var request = new DespatchDateRequest { ProductIds = [1], OrderDate = DateTime.Now };
+            var testDate = TestDates.Monday;
+            var request = new DespatchDateRequest { ProductIds = [1], OrderDate = testDate };
             
             var response = await _controllerUnderTest.Get(request);
+            
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
-            despatchDate.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(1));
+            despatchDate.Date.Date.ShouldBe(testDate.AddDays(1));
         }
 
         [Fact]
-        public async Task OneProductWithLeadTimeOfTwoDay()
+        public async Task 
+            Given_OneProductWithLeadTimeOfOneDay_When_OrderDateIsFriday_Then_ResultShouldBeTheDateOfTheFollowingMonday()
         {
-            var request = new DespatchDateRequest { ProductIds = [2], OrderDate = DateTime.Now };
+            var testDate = TestDates.Friday;
+            var request = new DespatchDateRequest { ProductIds = [1],  OrderDate = testDate };
             
             var response = await _controllerUnderTest.Get(request);
+            
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
-            despatchDate.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(2));
+            despatchDate.Date.Date.ShouldBe(testDate.AddDays(3));
         }
 
         [Fact]
-        public async Task OneProductWithLeadTimeOfThreeDay()
+        public async Task
+            Given_OneProductWithLeadTimeOfOneDay_When_OrderDateIsSaturday_ThenResultShouldBeTheDateOfTheFollowingTuesday()
         {
-            var request = new DespatchDateRequest { ProductIds = [3], OrderDate = DateTime.Now };
+            var testDate = TestDates.Saturday;
+            var request = new DespatchDateRequest { ProductIds = [1], OrderDate = testDate };
             
             var response = await _controllerUnderTest.Get(request);
+            
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
-            despatchDate.Date.Date.ShouldBe(DateTime.Now.Date.AddDays(3));
+            despatchDate.Date.Date.ShouldBe(testDate.AddDays(3));
         }
 
         [Fact]
-        public async Task SaturdayHasExtraTwoDays() 
+        public async Task 
+            Given_OneProductWithLeadTimeOfTwoDays_When_OrderDateIsTuesday_Then_ResultShouldBeTheDateOfTheFollowingThursday()
         {
-            var request = new DespatchDateRequest { ProductIds = [1], OrderDate = new DateTime(2018,1,26) };
-
+            var testDate = TestDates.Tuesday;
+            var request = new  DespatchDateRequest { ProductIds = [2], OrderDate = testDate };
+            
             var response = await _controllerUnderTest.Get(request);
+            
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
-            despatchDate.Date.ShouldBe(new DateTime(2018, 1, 26).Date.AddDays(3));
+            despatchDate.Date.Date.ShouldBe(testDate.AddDays(2));
         }
 
         [Fact]
-        public async Task SundayHasExtraDay()
+        public async Task
+            Given_OneProductWithLeadTimeOfTwoDays_When_OrderDateIsFriday_ThenResultShouldBeTheDateOfTheFollowingTuesday()
         {
-            var request = new DespatchDateRequest { ProductIds = [3], OrderDate = new DateTime(2018, 1, 25) };
+            var testDate = TestDates.Friday;
+            var request = new DespatchDateRequest { ProductIds = [2], OrderDate = testDate };
             
-            var response = await _controllerUnderTest.Get(request);
+            var response =  await _controllerUnderTest.Get(request);
+            
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
-            despatchDate.Date.ShouldBe(new DateTime(2018, 1, 25).Date.AddDays(4));
+            despatchDate.Date.Date.ShouldBe(testDate.AddDays(4));
+        }
+
+        [Fact]
+        public async Task
+            Given_OneProductWithLeadTimeOfTwoDays_When_OrderDateIsSunday_Then_ResultShouldBeTheDateOfTheFollowingWednesday()
+        {
+            var testDate = TestDates.Sunday;
+            var request = new DespatchDateRequest { ProductIds = [2], OrderDate = testDate };
+            
+            var response = await _controllerUnderTest.Get(request);
+            
+            var okResult = Assert.IsType<OkObjectResult>(response.Result);
+            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            despatchDate.Date.Date.ShouldBe(testDate.AddDays(3));
+        }
+
+        [Fact]
+        public async Task
+            Given_ProductsWithMaxLeadTimeOfOneDay_When_OrderDateIsWednesday_Then_ResultShouldBeTheDateOfTheFollowingThursday()
+        {
+            var testDate = TestDates.Wednesday;
+            var request = new DespatchDateRequest { ProductIds = [1, 4], OrderDate = testDate };
+            
+            var response = await _controllerUnderTest.Get(request);
+            
+            var okResult = Assert.IsType<OkObjectResult>(response.Result);
+            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            despatchDate.Date.Date.ShouldBe(testDate.AddDays(1));
+        }
+
+        [Fact]
+        public async Task
+            Given_ProductsWithMixedLeadTimesButAMaxOfThreeDays_When_OrderDateIsMonday_Then_ResultShouldBeTheDateOfTheFollowingThursday()
+        {
+            var testDate = TestDates.Monday;
+            var request = new DespatchDateRequest { ProductIds = [3, 4], OrderDate = testDate };
+            
+            var response =  await _controllerUnderTest.Get(request);
+            
+            var okResult = Assert.IsType<OkObjectResult>(response.Result);
+            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            despatchDate.Date.Date.ShouldBe(testDate.AddDays(3));
+        }
+        
+        [Fact]
+        public async Task
+            Given_ProductsWithMixedLeadTimesButAMaxOfThreeDays_When_OrderDateIsThursday_Then_ResultShouldBeTheDateOfTheFollowingTuesday()
+        {
+            var testDate = TestDates.Thursday;
+            var request = new DespatchDateRequest { ProductIds = [3, 4], OrderDate = testDate };
+            
+            var response =  await _controllerUnderTest.Get(request);
+            
+            var okResult = Assert.IsType<OkObjectResult>(response.Result);
+            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            despatchDate.Date.Date.ShouldBe(testDate.AddDays(5));
+        }
+
+        [Fact]
+        public async Task
+            Given_ProductsWithMaxLeadTimeOfSixDays_When_OrderDateIsWednesday_Then_ResultShouldBeTheDateOfTheFollowingThursday()
+        {
+            var testDate = TestDates.Wednesday;
+            var request = new DespatchDateRequest { ProductIds = [9, 1, 4], OrderDate = testDate };
+            
+            var response =  await _controllerUnderTest.Get(request);
+            
+            var okResult = Assert.IsType<OkObjectResult>(response.Result);
+            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            despatchDate.Date.Date.ShouldBe(testDate.AddDays(8));
+        }
+        
+        [Fact]
+        public async Task
+            Given_ProductsWithMaxLeadTimeOfSixDays_When_OrderDateIsFriday_Then_ResultShouldBeTheDateOfTheSecondFollowingMonday()
+        {
+            var testDate = TestDates.Friday;
+            var request = new DespatchDateRequest { ProductIds = [9, 1, 4], OrderDate = testDate };
+            
+            var response =  await _controllerUnderTest.Get(request);
+            
+            var okResult = Assert.IsType<OkObjectResult>(response.Result);
+            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            despatchDate.Date.Date.ShouldBe(testDate.AddDays(10));
+        }
+
+        [Fact]
+        public async Task
+            Given_ProductsWithMaxLeadTimeOfThirteenDays_When_OrderDateIsFriday_Then_ResultShouldBeTheDateOfTheThirdFollowingWednesday()
+        {
+            var testDate = TestDates.Friday;
+            var request = new  DespatchDateRequest { ProductIds = [9, 10, 4], OrderDate = testDate };
+            
+            var response =  await _controllerUnderTest.Get(request);
+            
+            var okResult = Assert.IsType<OkObjectResult>(response.Result);
+            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            despatchDate.Date.Date.ShouldBe(testDate.AddDays(19));
         }
     }
 }
