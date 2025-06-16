@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Options;
 using Shouldly;
+using UE.PostOffice.Api;
 using UE.PostOffice.Api.Controllers;
 using UE.PostOffice.Api.Model;
 using UE.PostOffice.Core.Configuration;
@@ -16,7 +20,7 @@ using Xunit;
 
 namespace UE.PostOffice.IntegrationTests
 {
-    public class PostOfficeTests
+    public class DespatchDateControllerTests
     {
         private readonly DespatchDateController _controllerUnderTest;
 
@@ -31,7 +35,7 @@ namespace UE.PostOffice.IntegrationTests
             public static readonly DateTime Sunday = new DateTime(2025, 6, 15);
         }
 
-        public PostOfficeTests()
+        public DespatchDateControllerTests()
         {
             IDbContext dbContext = new DbContext();
             var despatchSettings = new DespatchSettings
@@ -51,11 +55,14 @@ namespace UE.PostOffice.IntegrationTests
         public async Task 
             Given_OneProductWithLeadTimeOfOneDay_When_OrderDateIsMonday_Then_ResultShouldBeTheDateOfTheFollowingTuesday()
         {
+            //Arrange
             var testDate = TestDates.Monday;
             var request = new DespatchDateRequest { ProductIds = [1], OrderDate = testDate };
             
+            //Act
             var response = await _controllerUnderTest.Get(request);
             
+            //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(1));
@@ -65,11 +72,14 @@ namespace UE.PostOffice.IntegrationTests
         public async Task 
             Given_OneProductWithLeadTimeOfOneDay_When_OrderDateIsFriday_Then_ResultShouldBeTheDateOfTheFollowingMonday()
         {
+            //Arrange
             var testDate = TestDates.Friday;
             var request = new DespatchDateRequest { ProductIds = [1],  OrderDate = testDate };
             
+            //Act
             var response = await _controllerUnderTest.Get(request);
             
+            //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(3));
@@ -79,11 +89,14 @@ namespace UE.PostOffice.IntegrationTests
         public async Task
             Given_OneProductWithLeadTimeOfOneDay_When_OrderDateIsSaturday_ThenResultShouldBeTheDateOfTheFollowingTuesday()
         {
+            //Arrange
             var testDate = TestDates.Saturday;
             var request = new DespatchDateRequest { ProductIds = [1], OrderDate = testDate };
             
+            //Act
             var response = await _controllerUnderTest.Get(request);
             
+            //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(3));
@@ -93,11 +106,14 @@ namespace UE.PostOffice.IntegrationTests
         public async Task 
             Given_OneProductWithLeadTimeOfTwoDays_When_OrderDateIsTuesday_Then_ResultShouldBeTheDateOfTheFollowingThursday()
         {
+            //Arrange
             var testDate = TestDates.Tuesday;
             var request = new  DespatchDateRequest { ProductIds = [2], OrderDate = testDate };
             
+            //Act
             var response = await _controllerUnderTest.Get(request);
             
+            //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(2));
@@ -107,11 +123,14 @@ namespace UE.PostOffice.IntegrationTests
         public async Task
             Given_OneProductWithLeadTimeOfTwoDays_When_OrderDateIsFriday_ThenResultShouldBeTheDateOfTheFollowingTuesday()
         {
+            //Arrange
             var testDate = TestDates.Friday;
             var request = new DespatchDateRequest { ProductIds = [2], OrderDate = testDate };
             
+            //Act
             var response =  await _controllerUnderTest.Get(request);
             
+            //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(4));
@@ -121,11 +140,14 @@ namespace UE.PostOffice.IntegrationTests
         public async Task
             Given_OneProductWithLeadTimeOfTwoDays_When_OrderDateIsSunday_Then_ResultShouldBeTheDateOfTheFollowingWednesday()
         {
+            //Arrange
             var testDate = TestDates.Sunday;
             var request = new DespatchDateRequest { ProductIds = [2], OrderDate = testDate };
             
+            //Act
             var response = await _controllerUnderTest.Get(request);
             
+            //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(3));
@@ -135,11 +157,14 @@ namespace UE.PostOffice.IntegrationTests
         public async Task
             Given_ProductsWithMaxLeadTimeOfOneDay_When_OrderDateIsWednesday_Then_ResultShouldBeTheDateOfTheFollowingThursday()
         {
+            //Arrange
             var testDate = TestDates.Wednesday;
             var request = new DespatchDateRequest { ProductIds = [1, 4], OrderDate = testDate };
             
+            //Act
             var response = await _controllerUnderTest.Get(request);
             
+            //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(1));
@@ -149,11 +174,14 @@ namespace UE.PostOffice.IntegrationTests
         public async Task
             Given_ProductsWithMixedLeadTimesButAMaxOfThreeDays_When_OrderDateIsMonday_Then_ResultShouldBeTheDateOfTheFollowingThursday()
         {
+            //Arrange
             var testDate = TestDates.Monday;
             var request = new DespatchDateRequest { ProductIds = [3, 4], OrderDate = testDate };
             
+            //Act
             var response =  await _controllerUnderTest.Get(request);
             
+            //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(3));
@@ -163,11 +191,14 @@ namespace UE.PostOffice.IntegrationTests
         public async Task
             Given_ProductsWithMixedLeadTimesButAMaxOfThreeDays_When_OrderDateIsThursday_Then_ResultShouldBeTheDateOfTheFollowingTuesday()
         {
+            //Arrange
             var testDate = TestDates.Thursday;
             var request = new DespatchDateRequest { ProductIds = [3, 4], OrderDate = testDate };
             
+            //Act
             var response =  await _controllerUnderTest.Get(request);
             
+            //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(5));
@@ -177,11 +208,14 @@ namespace UE.PostOffice.IntegrationTests
         public async Task
             Given_ProductsWithMaxLeadTimeOfSixDays_When_OrderDateIsWednesday_Then_ResultShouldBeTheDateOfTheFollowingThursday()
         {
+            //Arrange
             var testDate = TestDates.Wednesday;
             var request = new DespatchDateRequest { ProductIds = [9, 1, 4], OrderDate = testDate };
             
+            //Act
             var response =  await _controllerUnderTest.Get(request);
             
+            //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(8));
@@ -191,11 +225,14 @@ namespace UE.PostOffice.IntegrationTests
         public async Task
             Given_ProductsWithMaxLeadTimeOfSixDays_When_OrderDateIsFriday_Then_ResultShouldBeTheDateOfTheSecondFollowingMonday()
         {
+            //Arrange
             var testDate = TestDates.Friday;
             var request = new DespatchDateRequest { ProductIds = [9, 1, 4], OrderDate = testDate };
             
+            //Act
             var response =  await _controllerUnderTest.Get(request);
             
+            //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(10));
@@ -205,11 +242,14 @@ namespace UE.PostOffice.IntegrationTests
         public async Task
             Given_ProductsWithMaxLeadTimeOfThirteenDays_When_OrderDateIsFriday_Then_ResultShouldBeTheDateOfTheThirdFollowingWednesday()
         {
+            //Arrange
             var testDate = TestDates.Friday;
             var request = new  DespatchDateRequest { ProductIds = [9, 10, 4], OrderDate = testDate };
             
+            //Act
             var response =  await _controllerUnderTest.Get(request);
             
+            //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
             var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(19));

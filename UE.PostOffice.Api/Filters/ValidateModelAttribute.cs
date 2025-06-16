@@ -20,6 +20,12 @@ public class ValidateModelAttribute : ActionFilterAttribute
 {
     public override void OnActionExecuting(ActionExecutingContext context)
     {
+        if (!context.ModelState.IsValid)
+        {
+            context.Result = new BadRequestObjectResult(context.ModelState);
+            return;
+        }
+        
         var serviceProvider = context.HttpContext.RequestServices;
 
         foreach (var argument in context.ActionArguments.Values)
