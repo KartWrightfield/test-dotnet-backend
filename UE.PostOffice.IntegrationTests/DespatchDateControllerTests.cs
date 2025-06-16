@@ -64,7 +64,7 @@ namespace UE.PostOffice.IntegrationTests
             
             //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
-            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            var despatchDate = Assert.IsType<DespatchDateResponse>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(1));
         }
 
@@ -81,7 +81,7 @@ namespace UE.PostOffice.IntegrationTests
             
             //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
-            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            var despatchDate = Assert.IsType<DespatchDateResponse>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(3));
         }
 
@@ -98,7 +98,7 @@ namespace UE.PostOffice.IntegrationTests
             
             //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
-            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            var despatchDate = Assert.IsType<DespatchDateResponse>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(3));
         }
 
@@ -115,7 +115,7 @@ namespace UE.PostOffice.IntegrationTests
             
             //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
-            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            var despatchDate = Assert.IsType<DespatchDateResponse>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(2));
         }
 
@@ -132,7 +132,7 @@ namespace UE.PostOffice.IntegrationTests
             
             //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
-            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            var despatchDate = Assert.IsType<DespatchDateResponse>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(4));
         }
 
@@ -149,7 +149,7 @@ namespace UE.PostOffice.IntegrationTests
             
             //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
-            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            var despatchDate = Assert.IsType<DespatchDateResponse>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(3));
         }
 
@@ -166,7 +166,7 @@ namespace UE.PostOffice.IntegrationTests
             
             //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
-            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            var despatchDate = Assert.IsType<DespatchDateResponse>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(1));
         }
 
@@ -183,7 +183,7 @@ namespace UE.PostOffice.IntegrationTests
             
             //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
-            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            var despatchDate = Assert.IsType<DespatchDateResponse>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(3));
         }
         
@@ -200,7 +200,7 @@ namespace UE.PostOffice.IntegrationTests
             
             //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
-            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            var despatchDate = Assert.IsType<DespatchDateResponse>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(5));
         }
 
@@ -217,7 +217,7 @@ namespace UE.PostOffice.IntegrationTests
             
             //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
-            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            var despatchDate = Assert.IsType<DespatchDateResponse>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(8));
         }
         
@@ -234,7 +234,7 @@ namespace UE.PostOffice.IntegrationTests
             
             //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
-            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            var despatchDate = Assert.IsType<DespatchDateResponse>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(10));
         }
 
@@ -251,7 +251,7 @@ namespace UE.PostOffice.IntegrationTests
             
             //Assert
             var okResult = Assert.IsType<OkObjectResult>(response.Result);
-            var despatchDate = Assert.IsType<DespatchDate>(okResult.Value);
+            var despatchDate = Assert.IsType<DespatchDateResponse>(okResult.Value);
             despatchDate.Date.Date.ShouldBe(testDate.AddDays(19));
         }
     }

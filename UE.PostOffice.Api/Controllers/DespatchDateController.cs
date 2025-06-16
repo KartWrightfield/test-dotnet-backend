@@ -30,17 +30,17 @@ namespace UE.PostOffice.Api.Controllers
         /// <response code="401">If the request isn't bearing a valid auth token</response>
         /// <response code="500">If there was an unexpected error during date calculation</response>
         [HttpGet]
-        [ProducesResponseType(typeof(DespatchDate), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DespatchDateResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<DespatchDate>> Get([FromQuery][Bind(Prefix = "")] DespatchDateRequest request)
+        public async Task<ActionResult<DespatchDateResponse>> Get([FromQuery][Bind(Prefix = "")] DespatchDateRequest request)
         {
             try
             {
                 var despatchDate = await despatchDateService.CalculateDespatchDate(request.ProductIds, request.OrderDate);
                 
-                return Ok(new DespatchDate { Date = despatchDate });
+                return Ok(new DespatchDateResponse { Date = despatchDate });
             }
             catch (Exception)
             {
