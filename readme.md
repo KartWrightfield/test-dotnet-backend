@@ -98,13 +98,91 @@ document.
 
 Q1. What 'code smells' / anti-patterns did you find in the existing 
 	implementation of part 1 & 2?
+	
+- Business logic and data access present in an API controller
+- No dependency injection; `DbContext` has an interface, but that's pointless when used like `DbContext` currently is (original `line:21`)
+- `_mlt` is in the wrong scope (and it certainly doesn't need to be public) (original `line:13`)
+- Instantiating a new instance of `DbContext` for every product (original `line:21`)
+  - This can cause things like connection pool exhaustion and/or memory leaks (when `DbContext` is replaced with EF)
+- Calling the DB (twice) separately for every product on the order, rather than using any kind of batch query or caching (original `line:22-23`)
+- Poorly named variables (`_mlt, s, lt`)
+- hardcoded ("magic") numbers with no context (original `line:29,31`)
+  - Not *that bad* in this case, as the `AddDays()` function does arguably provide context, but it's still a bit of a smell
+- No error handling
+- No validation on the input parameters
+- Inconsistent syntax around the "Part 2" solution `if/else` clause (original `line:27-32`)
+- Hard to test in its current state
+  - Has to be tested all as one "black box"
+  - Existing tests will break easily as soon as we start to make improvements to the method
+- No documentation/summary comments
+- Everything is synchronous/single-threaded
+- No security (authentication or authorisation)
+- `DateTime.Now` used instead of `DateTime.UtcNow`
+- Using a moving variable like `DateTime.Now/UtcNow` in tests, causing some tests to pass or fail depending on what day of the week it is that they're being run on
 
 Q2. What best practices have you used while implementing your solution?
 
+- Clean architecture and a separation of concerns (to conform to the Single Responsibility Principle)
+- Use of interfaces for the business logic and data access layers, providing such advantages as (or foundations for):
+  - applying the Open/Closed Principle, although there wasn't a particularly good use case in this project to demonstrate the principle fully
+  - the Liskov Substitution Principle, for if we wanted to swap in a different kind of database implementation, for example
+  - conforming to the Interface Segregation Principle, but again, the size of the project mean this arguably isn't being demonstrated fully here
+  - dependency injection rather than concrete implementations, as per the Dependency Inversion Principle
+  - components in the solution are loosely coupled
+  - the ability to use mocking for tests
+- API input parameters are now being validated
+- Basic authentication (a bit meaningless in its current implementation, but worth demonstrating, I think)
+- Rate limiting, helping to protect the service from being overwhelmed
+- Request/Response models
+- Error handling
+- Asynchronous programming
+- Expanded range of tests
+
 Q3. What further steps would you take to improve the solution given more time?
+
+- Logging and monitoring:
+  - Dedicated controller and `HealthCheck` endpoint that would be reporting to a dashboard of some kind
+  - Telemetry logging to monitor the broader performance of the service
+  - Exception/debug/warning/info log storage for more detailed investigative work
+- Global exception handler, allowing for custom exception types and further cleaning up the Get() endpoint (as the try/catch block would no longer need to be there)
+- Extend to additional environments (e.g. Testing, Staging)
+- Caching (depending on the amount of Supplier/Product data in the system and the amount of memory available to the service)
+- Extend calculation logic to include "edge case" things:
+  - bank holidays
+  - leap years
+  - daylight savings time transitions (assuming we would include time in a full version of this service)
+- Further testing improvements
+  - Integration tests could be extended to work with an actual database (with the help of data seeding mechanisms)
+    - On a related point, using hardcoded product IDs in the integration tests like I've done isn't ideal, as what if the lead time of a supplier changes? or the supplier of a product changes? Then the tests break. But solving that problem would be tied in to the data seeding mentioned above
+  - Could arguably take "magic numbers" out of tests but in my view moving things like the valid/invalid product IDs out of the tests and into something like a static TestConstants class make the tests less clear in terms of what data is going in to each test case. I think it's one of those cases where there are pros and cons to either approach
+  - We could also look to implement a TestStartup class to enable the creation of integration tests for middleware like auth and validation stuff
+  - Performance-oriented tests such as:
+    - Response times
+    - Concurrent requests
+    - Memory usage
+- Further refinement of business logic:
+  - Could the input parameters of `GET /DespatchDate` be replaced with just an order ID? Depending on the overall data flow of the system (i.e. what data do the clients calling this API have?), it would potentially make more sense to require only the Order ID
+- Improve end-user API experience:
+  - Returning an informative error when 0 product IDs are found
+  - When some product IDs are found but some aren't, expanding our response model to attach these "mystery" IDs as unfound, as that may prompt them to investigate whether there's an issue with their data or a bug in the client itself
+- Further validation for the input parameters based on business requirements:
+  - Limiting the number of product IDs passed (e.g. no more than 200 product IDs per request)
+  - Setting a lower limit on the order date (e.g. date must be more recent than 2010-01-01)
+  - Validating the format of the date to deal with US style date formats
 
 Q4. What's a technology that you're excited about and where do you see this 
     being applicable? (Your answer does not have to be related to this problem)
+
+~~~~
+Maybe a bit cliché at the moment, but for me it's AI coding assistants. They really compliment the way my brain works in that very rarely do I code raw from 
+memory, rather I'm regularly researching better techniques or patterns for achieving my current goal. So whereas I used to be going to places like 
+StackOverflow or looking through MSDN docs, now I use an AI coding assistant. Which has dramatically increased my productivity, as the former of those is
+considerably more time consuming.
+
+Of course there are drawbacks too. Just like an actual person, AI is fallible. But unlike a person (or most people at least) when an AI doesn't 
+know the answer, most models have a tendency to confidently make up nonsense. So, for that reason, I never let the AI change the code directly and I don't 
+copy-paste any code it gives me.
+~~~~
 
 ## Request and Response Examples
 
