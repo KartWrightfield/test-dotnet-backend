@@ -264,3 +264,27 @@ Despatch Date
 **And** the order is place on a Friday - 05/01/2018  
 **When** the despatch date is calculated  
 **Then** the despatch date is Monday - 22/01/2018
+
+# Swagger Instructions
+
+The API uses JWT Bearer token authentication. To use the protected endpoints:
+
+## Using the Swagger UI:
+  - Run the solution locally
+  - Navigate to http://localhost:5000/swagger
+  - Get an authentication token from the GetToken endpoint
+  - Click the "Authorize" button (lock icon) at the top of the page
+  - In the authorization popup, enter your token in the format: `Bearer your-token-here`
+  - Click "Authorize" to save
+  - All subsequent API requests will include your authentication token
+
+## Auth for Using API directly:
+
+1. Get an authentication token:
+   ```http
+   POST http://localhost:5000/api/Auth/token
+   ```
+   - This endpoint will return a JWT token.
+
+2. Add the `Authorization` header to your requests
+   - Format: `Bearer your-token-here`
